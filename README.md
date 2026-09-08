@@ -335,6 +335,51 @@ Caso o sensor não esteja disponível, deve apresentar uma mensagem informando a
 
 ---
 
+## 🧪 Testes
+
+### Testes de unidade
+
+A lógica de cálculo fica isolada em `SensorUtils.kt`, que não importa nenhuma classe do Android. Isso permite testá-la direto na JVM, sem emulador nem aparelho:
+
+```bash
+./gradlew test
+```
+
+São **21 testes** em `app/src/test/java/com/pdm/nivelbolha/SensorUtilsTest.kt`:
+
+| Grupo | O que é verificado |
+| ----- | ------------------ |
+| Conversão de ângulos | Radianos para graus; inclinação total combinando pitch e roll |
+| Detecção de 0° | Nivelado dentro da tolerância de 2°; inclinado fora dela |
+| Detecção de 90° | 88°, 90° e 92° reconhecidos; 45° e 85° recusados |
+| Posição da bolha | Centro quando nivelado; deslocamento proporcional; sentido correto |
+| Limite do mostrador | Varredura de −180° a 180° nos dois eixos — a bolha nunca sai do círculo |
+| Suavização | Aproximação gradual do valor e salto aceito na virada de ±180° |
+| Controle da vibração | Vibra ao entrar na zona; não repete com o aparelho parado; volta a vibrar após sair e retornar; histerese na fronteira da faixa |
+
+**Resultado: 21/21 aprovados.**
+
+### Testes no dispositivo
+
+Executados em um **Samsung Galaxy A56 (SM-A566E)** físico, com o aplicativo instalado via Android Studio.
+
+| # | Teste | Verificação | Resultado |
+| - | ----- | ----------- | --------- |
+| 1 | Inicialização | O aplicativo abre sem erros | ✅ |
+| 2 | Sensor | O sensor de rotação é identificado corretamente | ✅ |
+| 3 | Pitch | Inclinar o aparelho para frente e para trás altera o valor | ✅ |
+| 4 | Roll | Girar o aparelho lateralmente altera o valor | ✅ |
+| 5 | Nível | Sobre superfície plana: Pitch ≈ 0°, Roll ≈ 0° e status `NIVELADO` | ✅ |
+| 6 | Inclinação | Ao inclinar: status `INCLINADO` e a bolha se desloca | ✅ |
+| 7 | 90 graus | Aparelho em pé é reconhecido como posição de 90° | ✅ |
+| 8 | Vibração | Há feedback tátil ao entrar na faixa de 0° ou 90° | ✅ |
+| 9 | Vibração repetida | Parado na mesma faixa, o aparelho **não** vibra de novo | ✅ |
+| 10 | Ciclo de vida | Sair da Activity e retornar mantém o sensor funcionando | ✅ |
+
+**Resultado: 10/10 aprovados.**
+
+---
+
 ## 📚 Contexto acadêmico
 
 Este aplicativo foi desenvolvido como projeto da disciplina de:
