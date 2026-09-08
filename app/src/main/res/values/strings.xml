@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Nível de Bolha</string>
+    <string name="app_title">NÍVEL DE BOLHA</string>
+    <string name="pitch">Pitch</string>
+    <string name="roll">Roll</string>
+    <string name="nivelado">NIVELADO</string>
+    <string name="inclinado">INCLINADO</string>
+    <string name="noventa_graus">90 GRAUS</string>
+    <string name="dica">Apoie o aparelho sobre a superfície. O aparelho vibra ao atingir 0° ou 90°.</string>
+    <string name="sensor_indisponivel">Sensor indisponível</string>
+    <string name="sensor_indisponivel_detalhe">Este dispositivo não possui o sensor necessário para utilizar o nível de bolha.</string>
+</resources>

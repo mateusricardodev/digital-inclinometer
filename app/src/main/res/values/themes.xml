@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tema base. As cores reais sao definidas no Compose (Theme.kt). -->
+    <style name="Theme.NivelBolha" parent="android:Theme.Material.Light.NoActionBar" />
+</resources>
