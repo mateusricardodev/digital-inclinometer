@@ -12,3 +12,7 @@ captures/
 
 # Gradle
 .gradle/
+
+# Gerado pelo "Migrate to Gradle Daemon toolchain" do Android Studio.
+# E especifico da maquina; nao deve ser versionado.
+gradle/gradle-daemon-jvm.properties
