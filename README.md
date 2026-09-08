@@ -1,81 +1,378 @@
-# Nível de Bolha & Inclinômetro Digital
+# 📐 Nível de Bolha & Inclinômetro Digital
 
-Aplicativo Android nativo (Kotlin + Jetpack Compose) que usa o sensor de vetor de
-rotação do aparelho para funcionar como um nível de bolha digital.
+<p align="center">
+  <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white" alt="Kotlin">
+  <img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android">
+  <img src="https://img.shields.io/badge/Android%20Studio-3DDC84?style=for-the-badge&logo=androidstudio&logoColor=white" alt="Android Studio">
+  <img src="https://img.shields.io/badge/Jetpack%20Compose-4285F4?style=for-the-badge&logo=jetpackcompose&logoColor=white" alt="Jetpack Compose">
+</p>
 
-Projeto acadêmico da disciplina de Programação para Dispositivos Móveis —
-proposta 2 do documento `Projetos_PDM.pdf`.
+<p align="center">
+  <strong>Um nível de bolha digital desenvolvido para dispositivos Android utilizando sensores do próprio aparelho.</strong>
+</p>
 
-## O que o aplicativo faz
+---
 
-- Lê o sensor `Sensor.TYPE_ROTATION_VECTOR` e extrai os ângulos **pitch** e **roll**.
-- Mostra a inclinação total em destaque, com duas casas decimais.
-- Desenha um mostrador com `Canvas`, no qual a bolha se desloca conforme a inclinação.
-- Indica **NIVELADO**, **90 GRAUS** ou **INCLINADO**.
-- Vibra ao entrar na faixa de 0° ou 90° — uma única vez por entrada, nunca de forma contínua.
-- Exibe um aviso amigável em aparelhos que não possuem o sensor.
+## 📱 Sobre o projeto
 
-## Requisitos
+O **Nível de Bolha & Inclinômetro Digital** é um aplicativo Android desenvolvido em **Kotlin** com o objetivo de transformar o smartphone em uma ferramenta digital para medição de inclinação.
 
-- Android Studio (Ladybug ou mais recente)
-- JDK 17 ou superior
-- Android SDK 35 (`compileSdk`/`targetSdk`), `minSdk` 24
+O aplicativo utiliza os sensores internos do dispositivo para identificar a orientação do aparelho e calcular os ângulos de **Pitch** e **Roll**, apresentando essas informações de maneira visual e intuitiva.
 
-## Como executar
+A interface conta com um mostrador dinâmico que representa uma bolha digital, permitindo que o usuário visualize em tempo real a inclinação do aparelho.
+
+O projeto faz parte da disciplina de **Programação para Dispositivos Móveis (PDM)** e tem como foco a utilização da API nativa de sensores do Android.
+
+---
+
+## 🎯 Objetivos
+
+* Desenvolver um aplicativo Android utilizando Kotlin;
+* Trabalhar com os sensores nativos do dispositivo;
+* Utilizar o `SensorManager`;
+* Identificar a orientação do aparelho;
+* Calcular os ângulos de inclinação;
+* Representar os dados através de uma interface gráfica;
+* Implementar um nível de bolha digital;
+* Trabalhar com feedback tátil através de vibração;
+* Aplicar conceitos de desenvolvimento nativo para Android.
+
+---
+
+## ⚙️ Funcionalidades
+
+### 📐 Inclinômetro
+
+O aplicativo calcula e apresenta os dois principais ângulos de orientação utilizados no projeto:
+
+* **Pitch**
+* **Roll**
+
+Os valores são atualizados conforme o usuário movimenta o aparelho.
+
+### 🫧 Nível de bolha digital
+
+A aplicação possui um mostrador gráfico que representa uma bolha.
+
+Conforme o smartphone é inclinado, a posição da bolha é alterada de acordo com a orientação detectada pelos sensores.
+
+### 🎯 Detecção de nível
+
+O aplicativo identifica quando o dispositivo está próximo de uma posição nivelada.
+
+Quando os valores estão próximos de `0°`, o usuário recebe uma indicação visual de que o aparelho está nivelado.
+
+### 🔄 Detecção de 90°
+
+O sistema também considera a posição aproximada de `90°`, conforme especificado na proposta do projeto.
+
+### 📳 Feedback tátil
+
+Quando uma posição de referência é atingida, o aplicativo utiliza vibração como feedback para o usuário.
+
+A proposta original especifica feedback tátil quando a precisão se aproxima de **0° ou 90°**.
+
+---
+
+## 🧭 Funcionamento
+
+O funcionamento básico do aplicativo pode ser representado pelo seguinte fluxo:
+
+```text
+┌──────────────────────┐
+│ Usuário movimenta    │
+│ o smartphone         │
+└──────────┬───────────┘
+           │
+           ▼
+┌──────────────────────┐
+│ Sensor de rotação    │
+│ do dispositivo       │
+└──────────┬───────────┘
+           │
+           ▼
+┌──────────────────────┐
+│ SensorManager        │
+│ SensorEventListener  │
+└──────────┬───────────┘
+           │
+           ▼
+┌──────────────────────┐
+│ Cálculo da orientação│
+│ Pitch / Roll         │
+└──────────┬───────────┘
+           │
+           ▼
+┌──────────────────────┐
+│ Interface atualizada │
+│ em tempo real        │
+└──────────┬───────────┘
+           │
+           ▼
+┌──────────────────────┐
+│ Canvas movimenta     │
+│ a bolha digital      │
+└──────────────────────┘
+```
+
+---
+
+## 🧠 Conceitos técnicos
+
+O projeto utiliza a API nativa de sensores do Android.
+
+### `SensorManager`
+
+Responsável pelo gerenciamento dos sensores disponíveis no dispositivo.
+
+```kotlin
+val sensorManager =
+    getSystemService(Context.SENSOR_SERVICE) as SensorManager
+```
+
+### `TYPE_ROTATION_VECTOR`
+
+O sensor principal utilizado pelo projeto é:
+
+```kotlin
+Sensor.TYPE_ROTATION_VECTOR
+```
+
+Ele fornece informações utilizadas para determinar a orientação do dispositivo.
+
+---
+
+## 📊 Cálculo da orientação
+
+Para obter a orientação do aparelho, o projeto utiliza recursos disponibilizados pelo `SensorManager`.
+
+Entre eles:
+
+```kotlin
+SensorManager.getRotationMatrixFromVector()
+```
+
+e:
+
+```kotlin
+SensorManager.getOrientation()
+```
+
+Os valores obtidos são utilizados para calcular os ângulos de:
+
+```text
+Pitch
+Roll
+```
+
+Como os valores de orientação são obtidos em radianos, eles são convertidos para graus para facilitar a visualização pelo usuário.
+
+---
+
+## 🎨 Interface
+
+A interface do aplicativo é desenvolvida utilizando **Jetpack Compose**.
+
+O principal elemento visual é um `Canvas`, utilizado para desenhar o nível de bolha e atualizar sua posição conforme os valores dos sensores.
+
+Exemplo conceitual:
+
+```text
+              NÍVEL DE BOLHA
+
+                  0.42°
+
+             ┌───────────┐
+             │           │
+             │     ●     │
+             │     +     │
+             │           │
+             └───────────┘
+
+             Pitch: 0.31°
+             Roll:  0.42°
+
+              ✓ NIVELADO
+```
+
+---
+
+## 📳 Feedback por vibração
+
+O aplicativo utiliza o sistema de vibração do Android para fornecer feedback tátil.
+
+O conceito utilizado no projeto é o:
+
+```kotlin
+VibratorManager
+```
+
+A vibração é acionada quando o aparelho entra em uma das zonas de referência configuradas.
+
+Para evitar vibrações contínuas, o sistema deve controlar quando o usuário entra ou sai da zona de referência.
+
+---
+
+## 🔋 Ciclo de vida
+
+O monitoramento dos sensores é integrado ao ciclo de vida da Activity.
+
+Ao retornar para o aplicativo:
+
+```kotlin
+onResume()
+```
+
+o sensor é registrado novamente.
+
+Ao sair ou pausar:
+
+```kotlin
+onPause()
+```
+
+o listener é removido.
+
+Isso evita manter o sensor funcionando quando o aplicativo não está sendo utilizado.
+
+---
+
+## 🛠️ Tecnologias utilizadas
+
+| Tecnologia         | Utilização                  |
+| ------------------ | --------------------------- |
+| ☕ Kotlin           | Linguagem de programação    |
+| 🤖 Android         | Plataforma                  |
+| 🧩 Android Studio  | Ambiente de desenvolvimento |
+| 📐 SensorManager   | Gerenciamento dos sensores  |
+| 🔄 Rotation Vector | Orientação do dispositivo   |
+| 🎨 Jetpack Compose | Construção da interface     |
+| 🖌️ Canvas         | Desenho do nível de bolha   |
+| 📳 VibratorManager | Feedback tátil              |
+
+A proposta do projeto especifica o desenvolvimento nativo com **Kotlin e Android Studio**, utilizando a API de sensores do Android.
+
+---
+
+## 📂 Estrutura do projeto
+
+Uma possível organização:
+
+```text
+NiveDeBolha/
+│
+├── app/
+│   └── src/
+│       └── main/
+│           ├── java/
+│           │   └── .../
+│           │       └── MainActivity.kt
+│           │
+│           ├── res/
+│           │   ├── drawable/
+│           │   ├── mipmap/
+│           │   └── values/
+│           │
+│           └── AndroidManifest.xml
+│
+├── build.gradle.kts
+├── settings.gradle.kts
+└── README.md
+```
+
+---
+
+## ▶️ Como executar
+
+### 1. Clone o repositório
 
 ```bash
-./gradlew installDebug     # instala em um aparelho ou emulador conectado
-./gradlew test             # roda os testes de lógica na JVM
+git clone SEU_REPOSITORIO
 ```
 
-No Android Studio: abrir a pasta do projeto e usar *Run*.
+### 2. Abra o projeto
 
-> O emulador padrão do Android Studio já fornece o sensor de vetor de rotação.
-> Os valores podem ser alterados na aba *Virtual sensors* dos *Extended controls*.
-> A vibração só é sentida em um aparelho físico.
+Abra a pasta do projeto no:
 
-## Estrutura
+**Android Studio**
 
+### 3. Aguarde a sincronização
+
+Aguarde o Android Studio concluir o **Gradle Sync**.
+
+### 4. Conecte um dispositivo
+
+Utilize:
+
+* um smartphone Android físico; ou
+* um emulador que possua suporte aos sensores necessários.
+
+> Para testar corretamente a funcionalidade de inclinação, recomenda-se utilizar um dispositivo físico com sensores compatíveis.
+
+### 5. Execute
+
+Clique em:
+
+```text
+▶ Run
 ```
-app/src/main/java/com/pdm/nivelbolha/
-├── MainActivity.kt        # Activity, leitura do sensor, ciclo de vida e vibração
-├── SensorUtils.kt         # cálculos (pitch, roll, posição da bolha, zonas) — sem Android
-├── BubbleLevel.kt         # mostrador desenhado com Canvas
-├── NivelBolhaScreen.kt    # interface em Jetpack Compose
-└── Theme.kt               # tema Material 3
 
-app/src/test/java/com/pdm/nivelbolha/
-└── SensorUtilsTest.kt     # 21 testes da lógica de cálculo
+ou utilize:
+
+```text
+Shift + F10
 ```
 
-`SensorUtils.kt` não importa nenhuma classe do Android de propósito: assim a
-matemática fica separada da interface e pode ser testada direto na JVM, sem
-emulador.
+---
 
-## Como funciona
+## 📱 Compatibilidade
 
-**Sensor.** A `MainActivity` implementa `SensorEventListener`. Em `onSensorChanged`,
-`SensorManager.getRotationMatrixFromVector()` converte o vetor de rotação em uma
-matriz 3x3 e `SensorManager.getOrientation()` extrai azimute, pitch e roll em
-radianos, convertidos para graus com `Math.toDegrees()`.
+O funcionamento do aplicativo depende da presença dos sensores necessários no dispositivo.
 
-**Bolha.** `calcularPosicaoBolha()` transforma pitch e roll em um deslocamento em
-pixels. A bolha caminha para o lado mais alto, como em um nível real, e o vetor é
-encurtado quando passaria da borda do mostrador.
+Antes de utilizar o sensor, o aplicativo deve verificar sua disponibilidade.
 
-**Vibração.** `ControleVibracao` guarda a zona atual (FORA, ZERO, NOVENTA) e só
-devolve `true` na transição de entrada em uma zona. Para sair de uma zona é preciso
-passar de uma tolerância um pouco maior do que a de entrada (histerese), o que impede
-que o ruído do sensor faça o aparelho vibrar sem parar na fronteira da faixa.
+Caso o sensor não esteja disponível, deve apresentar uma mensagem informando ao usuário que o dispositivo não possui o recurso necessário.
 
-**Ciclo de vida.** O listener é registrado em `onResume()` e removido em `onPause()`,
-para não consumir bateria com a tela em segundo plano.
+---
 
-## Tolerâncias
+## 📚 Contexto acadêmico
 
-| Constante            | Valor | Onde é usada                                  |
-|----------------------|-------|-----------------------------------------------|
-| `TOLERANCIA_GRAUS`   | 2°    | faixa de 0° e de 90°                          |
-| `INCLINACAO_MAXIMA`  | 30°   | inclinação que leva a bolha até a borda       |
+Este aplicativo foi desenvolvido como projeto da disciplina de:
 
-Ambas ficam em `SensorUtils.kt` e podem ser ajustadas em um único lugar.
+**Programação para Dispositivos Móveis — PDM**
+
+A proposta escolhida no material da disciplina é o **Nível de Bolha & Inclinômetro Digital**, uma ferramenta destinada a carpintaria, reformas e alinhamento de superfícies.
+
+O projeto tem como objetivo colocar em prática o desenvolvimento nativo para Android e a utilização dos sensores disponíveis no dispositivo.
+
+---
+
+## 🚀 Possíveis melhorias
+
+Algumas funcionalidades podem ser adicionadas futuramente:
+
+* [ ] Histórico das medições;
+* [ ] Calibração manual do sensor;
+* [ ] Modo escuro;
+* [ ] Mais opções de visualização;
+* [ ] Animações adicionais;
+* [ ] Configuração da tolerância de nivelamento;
+* [ ] Diferentes estilos de nível de bolha.
+
+---
+
+## 👨‍💻 Desenvolvedor
+
+**Mateus Ricardo**
+
+GitHub: [@mateusricardodev](https://github.com/mateusricardodev)
+
+---
+
+<p align="center">
+
+📐 **Nível de Bolha & Inclinômetro Digital**
+
+Desenvolvido com Kotlin + Android
+
+</p>
